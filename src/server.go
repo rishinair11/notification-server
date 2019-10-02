@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	"gopkg.in/gomail.v2"
 )
@@ -12,6 +13,8 @@ import (
 type IncomingReq struct {
 	Email string `json:"emailID"`
 }
+
+var USERNAME, PASSWORD string
 
 func handleMail(w http.ResponseWriter, r *http.Request) {
 	// Read body
@@ -54,10 +57,8 @@ func sendMail(req IncomingReq) {
 
 	host := "smtp.mailtrap.io"
 	port := 2525
-	username := "e953cacdb56e85"
-	password := "2ac7a9386b91de"
-
-	daemon := gomail.NewDialer(host, port, username, password)
+	
+	daemon := gomail.NewDialer(host, port, USERNAME, PASSWORD)
 
 	// Send the email
 	if err := daemon.DialAndSend(msg); err != nil {
@@ -65,7 +66,18 @@ func sendMail(req IncomingReq) {
 	}
 }
 
+func validateAndSetMailCredentials() {
+	USERNAME = os.Getenv("USERNAME")
+	PASSWORD = os.Getenv("PASSWORD")
+	
+	if USERNAME == "" || PASSWORD == ""  { 
+		panic("Mail server username/password cannot be empty")
+	} 
+}
+
 func main() {
+	validateAndSetMailCredentials()
+	
 	http.HandleFunc("/mail", handleMail)
 	address := ":5252"
 	log.Println("Starting server on address", address)
