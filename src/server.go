@@ -46,7 +46,7 @@ func handleMail(w http.ResponseWriter, r *http.Request) {
 	sendMail(req)
 
 	response := Response{}
-	response.Message = "Email has been successfully to " + req.Email
+	response.Message = "Email has been successfully send to " + req.Email
 	
 	output, err := json.Marshal(response)
 	if err != nil {
@@ -65,9 +65,6 @@ func sendMail(req IncomingReq) {
 	msg.SetHeader("Subject", req.Subject)
 	msg.SetBody("text/html", "<b>" + req.Body + "</b>!")
 
-	//host := "smtp.mailtrap.io"
-	//port := 2525
-	
 	daemon := gomail.NewDialer(HOST, IPORT, USERNAME, PASSWORD)
 
 	// Send the email
