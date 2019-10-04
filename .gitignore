@@ -1,2 +1,6 @@
 !./*.go
 !.gitignore
+
+/build
+/vendor
+Gopkg.lock

@@ -12,9 +12,9 @@ import (
 )
 
 type IncomingReq struct {
-	Email string `json:"emailID"`
+	Email   string `json:"emailID"`
 	Subject string `json:"subject"`
-	Body string `json:"body"`
+	Body    string `json:"body"`
 }
 
 type Response struct {
@@ -47,13 +47,13 @@ func handleMail(w http.ResponseWriter, r *http.Request) {
 
 	response := Response{}
 	response.Message = "Email has been successfully send to " + req.Email
-	
+
 	output, err := json.Marshal(response)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	
+
 	w.Header().Set("content-type", "application/json")
 	w.Write(output)
 }
@@ -63,7 +63,7 @@ func sendMail(req IncomingReq) {
 	msg.SetHeader("From", FROM)
 	msg.SetHeader("To", req.Email)
 	msg.SetHeader("Subject", req.Subject)
-	msg.SetBody("text/html", "<b>" + req.Body + "</b>!")
+	msg.SetBody("text/html", "<b>"+req.Body+"</b>!")
 
 	daemon := gomail.NewDialer(HOST, IPORT, USERNAME, PASSWORD)
 
@@ -79,12 +79,11 @@ func validateAndSetMailCredentials() {
 	HOST = os.Getenv("HOST")
 	PORT = os.Getenv("PORT")
 	FROM = os.Getenv("FROM")
-	
-	if USERNAME == "" || PASSWORD == "" || HOST == "" || PORT == "" || FROM == "" { 
+
+	if USERNAME == "" || PASSWORD == "" || HOST == "" || PORT == "" || FROM == "" {
 		panic("Mail server USERNAME/PASSWORD/HOST/PORT/FROM cannot be empty")
-	} 
-	
-	
+	}
+
 	intValue, err := strconv.Atoi(PORT)
 	if err != nil {
 		panic("Mail server PORT value is invalid")
@@ -95,7 +94,7 @@ func validateAndSetMailCredentials() {
 
 func main() {
 	validateAndSetMailCredentials()
-	
+
 	http.HandleFunc("/mail", handleMail)
 	address := ":5252"
 	log.Println("Starting server on address", address)
