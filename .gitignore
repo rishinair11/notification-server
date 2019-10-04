@@ -1,2 +1,6 @@
 !./*.go
 !.gitignore
+
+glide.lock
+/vendor
+/build
