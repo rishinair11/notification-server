@@ -1,6 +1,6 @@
 !./*.go
 !.gitignore
 
-glide.lock
+Gopkg.lock
 /vendor
 /build

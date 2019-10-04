@@ -12,11 +12,10 @@ clean:
 prereq:
 	@echo "--> prerequisites..."
 	@mkdir -p build/bin
-	@go get -u github.com/Masterminds/glide
 
 deps: prereq
-		@echo "--> installing prereqs..."
-	@glide install
+	@echo "--> installing prereqs..."
+	@dep ensure
 
 build: prereq
 	@echo '--> building...'
