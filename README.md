@@ -26,8 +26,8 @@ docker run --name notification-server -p 5252:5252 --env USERNAME=<MAILTRAP_USER
 **REQUEST BODY** -
 ```
 {
-	"emailID": "test@email.com",
-	"subject": "test",
-    "body": "hello"
+   "emailID": "test@email.com",
+   "subject": "test",
+   "body": "hello"
 }
 ```
